@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="A responsive web-based calculator with advanced features">
 </head>
 <body>
     <div class="calculator">
+        <div class="calculator-header">
+            <h1>Calculator</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+        
         <div class="display">
+            <div class="memory-indicator"></div>
             <div id="history"></div>
             <input type="text" id="result" readonly>
         </div>
+        
         <div class="buttons">
+            <button class="memory-btn" value="MC">MC</button>
+            <button class="memory-btn" value="MR">MR</button>
+            <button class="memory-btn" value="M+">M+</button>
+            <button class="memory-btn" value="MS">MS</button>
+            
             <button class="operator" value="C">C</button>
             <button class="operator" value="⌫">⌫</button>
             <button class="operator" value="%">%</button>
-            <button class="operator" value="/">/</button>
+            <button class="operator" value="/">÷</button>
             
             <button value="7">7</button>
             <button value="8">8</button>
@@ -36,6 +49,10 @@
             <button value="0">0</button>
             <button value=".">.</button>
             <button class="equals" value="=">=</button>
+        </div>
+        
+        <div class="calculator-footer">
+            <p>AK Infratech Internship 2025</p>
         </div>
     </div>
     <script src="script.js"></script>
