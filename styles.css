@@ -88,3 +88,114 @@ button:hover {
     overflow-x: auto;
     white-space: nowrap;
 }
+
+/* Add these styles to enhance the UI */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #e9ecef;
+    --text-color: #212529;
+    --bg-color: #f0f0f0;
+    --calculator-bg: #fff;
+    --button-hover: #f8f9fa;
+    --button-active: #e2e6ea;
+    --display-bg: #f8f9fa;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme {
+    --primary-color: #0d6efd;
+    --secondary-color: #343a40;
+    --text-color: #f8f9fa;
+    --bg-color: #212529;
+    --calculator-bg: #343a40;
+    --button-hover: #495057;
+    --button-active: #6c757d;
+    --display-bg: #212529;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.calculator {
+    background: var(--calculator-bg);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    transition: all 0.3s ease;
+    max-width: 350px;
+    width: 100%;
+}
+
+.calculator-header {
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--secondary-color);
+    position: relative;
+}
+
+.theme-toggle {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+#result {
+    background: var(--display-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+button {
+    background: var(--calculator-bg);
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+}
+
+button:active {
+    background: var(--button-active);
+    transform: translateY(1px);
+}
+
+.operator {
+    background: var(--secondary-color);
+}
+
+.equals {
+    background: var(--primary-color);
+}
+
+.equals:hover {
+    background: var(--primary-color);
+    opacity: 0.9;
+}
+
+/* Button press animation */
+.button-press {
+    animation: buttonPress 0.2s ease;
+}
+
+@keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+#history {
+    color: var(--text-color);
+    opacity: 0.7;
+}
