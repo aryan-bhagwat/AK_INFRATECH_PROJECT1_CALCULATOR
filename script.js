@@ -11,6 +11,34 @@ document.querySelectorAll('.buttons button').forEach(button => {
     button.addEventListener('click', () => handleButton(button.value));
 });
 
+// Add memory functions - place these with your other calculator functions
+
+let memoryValue = 0;
+
+function memoryStore() {
+    memoryValue = parseFloat(currentInput);
+    document.querySelector('.memory-indicator').classList.add('active');
+}
+
+function memoryRecall() {
+    if (memoryValue !== null) {
+        currentInput = memoryValue.toString();
+        lastInputType = 'number';
+        updateDisplay();
+    }
+}
+
+function memoryAdd() {
+    memoryValue += parseFloat(currentInput);
+    document.querySelector('.memory-indicator').classList.add('active');
+}
+
+function memoryClear() {
+    memoryValue = 0;
+    document.querySelector('.memory-indicator').classList.remove('active');
+}
+
+// Update handleButton function to include memory operations
 function handleButton(value) {
     if (isNumber(value)) {
         inputNumber(value);
@@ -25,6 +53,18 @@ function handleButton(value) {
     } else if (value === '⌫') {
         backspace();
     }
+    
+    // Add these conditions
+    else if (value === 'MS') {
+        memoryStore();
+    } else if (value === 'MR') {
+        memoryRecall();
+    } else if (value === 'M+') {
+        memoryAdd();
+    } else if (value === 'MC') {
+        memoryClear();
+    }
+    
     updateDisplay();
 }
 
@@ -70,27 +110,59 @@ function inputOperator(op) {
     resultShown = false;
 }
 
+// Replace the calculate function with this improved version
+
 function calculate() {
     if (lastInputType === 'operator') {
         expression = expression.slice(0, -1);
     } else {
         expression += (expression === '' ? '' : ' ') + currentInput;
     }
+    
     try {
+        // Replace × and ÷ with * and /
         let safeExpr = expression.replace(/×/g, '*').replace(/÷/g, '/');
-        let result = eval(safeExpr);
-        if (result === Infinity || isNaN(result)) {
+        
+        // Validate expression before evaluation
+        if (!isValidExpression(safeExpr)) {
+            throw new Error("Invalid expression");
+        }
+        
+        // Use Function constructor instead of eval for better security
+        const result = Function('"use strict"; return (' + safeExpr + ')')();
+        
+        if (!isFinite(result) || isNaN(result)) {
             currentInput = 'Error';
         } else {
-            currentInput = result.toString();
+            // Format the result to avoid extremely long decimals
+            currentInput = formatResult(result);
         }
         resultShown = true;
-    } catch {
+    } catch (error) {
+        console.error("Calculation error:", error);
         currentInput = 'Error';
         resultShown = true;
     }
+    
     expression = '';
     lastInputType = 'equal';
+}
+
+// Add these helper functions
+function isValidExpression(expr) {
+    // Basic validation to prevent malicious code execution
+    return /^[\d\s+\-*/.()]+$/.test(expr);
+}
+
+function formatResult(result) {
+    // Convert to string with appropriate precision
+    if (Number.isInteger(result)) {
+        return result.toString();
+    } else {
+        // Limit to 10 significant digits to avoid floating point issues
+        const precision = 10 - Math.floor(Math.log10(Math.abs(result)));
+        return result.toFixed(Math.max(0, precision));
+    }
 }
 
 function clear() {
@@ -128,4 +200,73 @@ function isOperator(value) {
     return ['+', '-', '*', '/', '×', '÷', '%'].includes(value);
 }
 
+// Add keyboard support - place this after your existing event listeners
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    
+    // Prevent default behavior for calculator keys
+    if (/[\d+\-*/.%=]|Enter|Backspace|Escape/.test(key)) {
+        event.preventDefault();
+    }
+    
+    // Map keyboard keys to calculator functions
+    if (/\d/.test(key)) {
+        handleButton(key);
+    } else if (key === '.') {
+        handleButton('.');
+    } else if (['+', '-', '*', '/'].includes(key)) {
+        handleButton(key);
+    } else if (key === '%') {
+        handleButton('%');
+    } else if (key === 'Enter' || key === '=') {
+        handleButton('=');
+    } else if (key === 'Escape') {
+        handleButton('C');
+    } else if (key === 'Backspace') {
+        handleButton('⌫');
+    }
+    
+    // Add visual feedback for the pressed button
+    const buttonValue = key === 'Enter' ? '=' : (key === 'Escape' ? 'C' : key);
+    const button = Array.from(document.querySelectorAll('.buttons button'))
+        .find(btn => btn.value === buttonValue);
+    
+    if (button) {
+        button.classList.add('button-press');
+        setTimeout(() => button.classList.remove('button-press'), 200);
+    }
+});
+
 updateDisplay();
+
+
+// Add theme toggle functionality - place this near the top of your script
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+    
+    // Save theme preference
+    const isDarkTheme = document.body.classList.contains('dark-theme');
+    localStorage.setItem('darkTheme', isDarkTheme);
+    
+    // Update toggle button text
+    const themeToggle = document.querySelector('.theme-toggle');
+    themeToggle.textContent = isDarkTheme ? '☀️' : '🌙';
+}
+
+// Load saved theme preference
+function loadTheme() {
+    const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
+    if (isDarkTheme) {
+        document.body.classList.add('dark-theme');
+    }
+    
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        themeToggle.textContent = isDarkTheme ? '☀️' : '🌙';
+    }
+}
+
+// Call this when the DOM is loaded
+document.addEventListener('DOMContentLoaded', loadTheme);
