@@ -34,11 +34,8 @@ This project is a professional-grade, responsive web-based calculator built as p
 
 calculator/
 ├── index.html      # Main HTML structure
-
 ├── styles.css      # All styling and theme definitions
-
 ├── script.js       # Calculator logic and interactivity
-
 └── README.md       # Project documentation
 
 ## Implementation Details
