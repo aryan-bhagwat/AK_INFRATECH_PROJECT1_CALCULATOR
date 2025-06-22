@@ -6,39 +6,12 @@ let expression = '';
 let lastInputType = '';
 let resultShown = false;
 
-
 document.querySelectorAll('.buttons button').forEach(button => {
     button.addEventListener('click', () => handleButton(button.value));
 });
 
-// Add memory functions - place these with your other calculator functions
+// Memory functions removed
 
-let memoryValue = 0;
-
-function memoryStore() {
-    memoryValue = parseFloat(currentInput);
-    document.querySelector('.memory-indicator').classList.add('active');
-}
-
-function memoryRecall() {
-    if (memoryValue !== null) {
-        currentInput = memoryValue.toString();
-        lastInputType = 'number';
-        updateDisplay();
-    }
-}
-
-function memoryAdd() {
-    memoryValue += parseFloat(currentInput);
-    document.querySelector('.memory-indicator').classList.add('active');
-}
-
-function memoryClear() {
-    memoryValue = 0;
-    document.querySelector('.memory-indicator').classList.remove('active');
-}
-
-// Update handleButton function to include memory operations
 function handleButton(value) {
     if (isNumber(value)) {
         inputNumber(value);
@@ -54,16 +27,7 @@ function handleButton(value) {
         backspace();
     }
     
-    // Add these conditions
-    else if (value === 'MS') {
-        memoryStore();
-    } else if (value === 'MR') {
-        memoryRecall();
-    } else if (value === 'M+') {
-        memoryAdd();
-    } else if (value === 'MC') {
-        memoryClear();
-    }
+    // Memory conditions removed
     
     updateDisplay();
 }
@@ -240,9 +204,7 @@ document.addEventListener('keydown', (event) => {
 
 updateDisplay();
 
-
-// Add theme toggle functionality - place this near the top of your script
-
+// Theme toggle functionality
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
     

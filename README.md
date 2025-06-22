@@ -7,7 +7,7 @@ This project is a professional-grade, responsive web-based calculator built as p
 ### Features
 
 - **Basic Arithmetic Operations**: Addition, subtraction, multiplication, division
-- **Advanced Functions**: Percentage calculations, memory functions (MC, MR, M+, MS)
+- **Advanced Functions**: Percentage calculations
 - **User Experience**: 
   - Calculation history display
   - Responsive design for all screen sizes
